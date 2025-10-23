@@ -1,0 +1,14 @@
+<div class="layout-container">
+  <aside class="sidebar">
+    <h2 class="logo">💰 Mi Finanzas</h2>
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+      <a routerLink="/presupuesto" routerLinkActive="active">Gestión de presupuesto</a>
+      <a routerLink="/deudas" routerLinkActive="active">Control de deudas</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

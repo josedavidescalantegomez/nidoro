@@ -1,0 +1,21 @@
+<div class="dashboard-container">
+  <div class="balance-card">
+    <h2>Balance Total</h2>
+    <h1>{{ totalBalance | currency }}</h1>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card">
+      <h3>Transacciones Recientes</h3>
+      <div class="transactions-list">
+        <div *ngFor="let transaction of recentTransactions" class="transaction-item">
+          <span>{{ transaction.description }}</span>
+          <span [class.negative]="transaction.amount < 0">
+            {{ transaction.amount | currency }}
+          </span>
+          <span class="date">{{ transaction.date | date:'shortDate' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
