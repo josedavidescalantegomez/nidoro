@@ -1,1 +1,97 @@
-<p>presupuesto works!</p>
+<div class="presupuesto-container">
+  <h2>Control Mensual de Presupuesto</h2>
+
+  <form [formGroup]="presupuestoForm" class="presupuesto-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="category" required>
+        <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput formControlName="description" placeholder="Ej: Gasolina, Supermercado..." required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Monto</mat-label>
+      <input matInput type="number" formControlName="amount" required min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Mes</mat-label>
+      <mat-select formControlName="month" required>
+        <mat-option *ngFor="let m of meses" [value]="m">{{ m }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="acciones-form">
+      <button mat-raised-button color="primary" (click)="guardar()" [disabled]="presupuestoForm.invalid">
+        {{ modoEdicion ? 'Actualizar' : 'Agregar' }}
+      </button>
+
+      <button *ngIf="modoEdicion" mat-button color="warn" (click)="cancelarEdicion()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+
+  <div class="filtros">
+    <mat-form-field appearance="outline">
+      <mat-label>Filtrar por Categoría</mat-label>
+      <mat-select [(ngModel)]="filtroCategoria">
+        <mat-option value="">Todas</mat-option>
+        <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Filtrar por Mes</mat-label>
+      <mat-select [(ngModel)]="filtroMes">
+        <mat-option value="">Todos</mat-option>
+        <mat-option *ngFor="let m of meses" [value]="m">{{ m }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="filtrarPorCategoria()" class="mat-elevation-z8 full-width-table">
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Categoría</th>
+      <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Descripción</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Monto</th>
+      <td mat-cell *matCellDef="let element">{{ element.amount | currency:'COP' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="month">
+      <th mat-header-cell *matHeaderCellDef>Mes</th>
+      <td mat-cell *matCellDef="let element">{{ element.month }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="editar(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminar(element.id!)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <div class="total">
+    <strong>Total filtrado: </strong>{{ totalFiltrado | currency:'COP' }}
+  </div>
+</div>
