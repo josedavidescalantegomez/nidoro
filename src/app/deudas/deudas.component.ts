@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-deudas',
-  imports: [],
+  standalone: false,
   templateUrl: './deudas.component.html',
-  styleUrl: './deudas.component.scss'
+  styleUrls: ['./deudas.component.scss']
 })
 export class DeudasComponent {
 
